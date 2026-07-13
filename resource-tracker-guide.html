@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Resource & Device Distribution Tracker — Product Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  background: #F6F2E9;
+  color: #1A1A16;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Tokens ─────────────────────────────────────────────────── */
+:root {
+  --forest:       #123524;
+  --forest-light: #1F5C3D;
+  --gold:         #D9A62E;
+  --gold-soft:    #F0D89B;
+  --sky:          #3E7CB1;
+  --clay:         #B54834;
+  --paper:        #F6F2E9;
+  --panel:        #FFFFFF;
+  --ink:          #1A1A16;
+  --muted:        #6B6558;
+  --line:         rgba(26,26,22,0.10);
+}
+
+/* ── Cover ──────────────────────────────────────────────────── */
+.cover {
+  background: var(--forest);
+  color: #fff;
+  padding: 72px 60px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 5px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--forest-light) 0px, var(--forest-light) 8px,
+    var(--gold)         8px, var(--gold)         10px,
+    var(--forest-light) 10px, var(--forest-light) 12px,
+    #fff                12px, #fff                13px,
+    var(--forest-light) 13px, var(--forest-light) 15px
+  );
+}
+
+.cover-eyebrow {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cover-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.cover-title {
+  font-family: "Space Grotesk", ui-sans-serif, sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #fff;
+  max-width: 700px;
+  margin-bottom: 20px;
+}
+
+.cover-subtitle {
+  font-size: 16px;
+  color: rgba(255,255,255,0.65);
+  max-width: 560px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.cover-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.cover-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cover-meta-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.40);
+}
+
+.cover-meta-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+}
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 32px 80px;
+}
+
+/* ── TOC ────────────────────────────────────────────────────── */
+.toc {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--forest);
+  border-radius: 6px;
+  padding: 28px 32px;
+  margin: 44px 0 60px;
+}
+
+.toc-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.toc-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 40px;
+}
+
+.toc-list a {
+  font-size: 14px;
+  color: var(--forest-light);
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toc-list a:hover { text-decoration: underline; }
+
+.toc-num {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  color: var(--muted);
+  width: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Section headings ───────────────────────────────────────── */
+.section {
+  margin-bottom: 60px;
+}
+
+.section-eyebrow {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-eyebrow::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.section-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+
+.section-lead {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 680px;
+  margin-bottom: 28px;
+  line-height: 1.65;
+}
+
+/* ── Feature cards ──────────────────────────────────────────── */
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.feature-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 20px 22px;
+}
+
+.feature-card-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(18,53,36,0.08);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  color: var(--forest);
+}
+
+.feature-card-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.feature-card-body {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── View breakdowns ────────────────────────────────────────── */
+.view-block {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.view-block-header {
+  padding: 18px 24px 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.view-block-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.icon-forest { background: rgba(18,53,36,0.10); color: var(--forest); }
+.icon-sky    { background: rgba(62,124,177,0.12); color: var(--sky); }
+.icon-gold   { background: rgba(217,166,46,0.15); color: #9B7119; }
+.icon-clay   { background: rgba(181,72,52,0.12); color: var(--clay); }
+
+.view-block-name {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.view-block-tagline {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.view-block-body {
+  padding: 20px 24px;
+}
+
+.view-block-body p {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.view-block-body p:last-of-type { margin-bottom: 0; }
+
+/* ── Element list ───────────────────────────────────────────── */
+.element-list {
+  list-style: none;
+  margin-top: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.element-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.element-item:last-child { border-bottom: none; }
+
+.element-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--forest-light);
+  background: rgba(18,53,36,0.08);
+  padding: 2px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  align-self: flex-start;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.element-desc {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── Status pills ───────────────────────────────────────────── */
+.status-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.status-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  border-left-width: 3px;
+}
+
+.status-item.status-well  { border-left-color: var(--forest-light); }
+.status-item.status-below { border-left-color: var(--gold); }
+.status-item.status-under { border-left-color: var(--clay); }
+
+.status-pill {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.pill-well  { background: rgba(31,92,61,0.12);  color: var(--forest-light); }
+.pill-below { background: rgba(217,166,46,0.18); color: #9B7119; }
+.pill-under { background: rgba(181,72,52,0.14);  color: var(--clay); }
+.pill-open        { background: rgba(181,72,52,0.12);  color: var(--clay); }
+.pill-inprogress  { background: rgba(62,124,177,0.14); color: #29618F; }
+.pill-fulfilled   { background: rgba(31,92,61,0.12);   color: var(--forest-light); }
+
+.status-content {}
+
+.status-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.status-conditions {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── Callout boxes ──────────────────────────────────────────── */
+.callout {
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 24px 0;
+  font-size: 14px;
+  line-height: 1.65;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.callout-principle {
+  background: rgba(18,53,36,0.06);
+  border: 1px solid rgba(18,53,36,0.15);
+}
+
+.callout-note {
+  background: rgba(217,166,46,0.10);
+  border: 1px solid rgba(217,166,46,0.25);
+}
+
+.callout-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.callout strong {
+  display: block;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+}
+
+.callout p { color: var(--muted); margin: 0; }
+
+/* ── Workflow diagram ───────────────────────────────────────── */
+.workflow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 20px 0;
+  position: relative;
+}
+
+.workflow-step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding-bottom: 24px;
+  position: relative;
+}
+
+.workflow-step:last-child { padding-bottom: 0; }
+
+.workflow-step::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 36px;
+  bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+
+.workflow-step:last-child::before { display: none; }
+
+.workflow-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--forest);
+  color: #fff;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.workflow-content {
+  padding-top: 6px;
+}
+
+.workflow-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.workflow-body {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── Who does what table ────────────────────────────────────── */
+.role-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.role-table th {
+  background: var(--paper);
+  padding: 10px 16px;
+  text-align: left;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+}
+
+.role-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.role-table tr:last-child td { border-bottom: none; }
+
+.role-tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.tag-head { background: rgba(18,53,36,0.10); color: var(--forest); }
+.tag-rc   { background: rgba(62,124,177,0.12); color: #29618F; }
+.tag-auto { background: rgba(217,166,46,0.15); color: #9B7119; }
+
+/* ── Divider ────────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 52px 0;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.footer {
+  background: var(--forest);
+  color: rgba(255,255,255,0.5);
+  padding: 32px 60px;
+  font-size: 12px;
+  font-family: "IBM Plex Mono", monospace;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-left { line-height: 1.8; }
+.footer-right { color: rgba(255,255,255,0.3); }
+
+/* ── Print ──────────────────────────────────────────────────── */
+@media print {
+  body { background: #fff; }
+  .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { padding: 0 20px 40px; }
+  .view-block, .feature-card, .status-item, .callout { break-inside: avoid; }
+  .section { break-inside: avoid; }
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 680px) {
+  .cover { padding: 48px 24px 44px; }
+  .page { padding: 0 20px 60px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .toc-list { grid-template-columns: 1fr; }
+  .footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     COVER
+================================================================ -->
+<div class="cover">
+  <div class="cover-eyebrow">EduSpots Operations Portfolio · Project 5 of 5</div>
+  <h1 class="cover-title">Resource &amp; Device Distribution Tracker</h1>
+  <p class="cover-subtitle">
+    A product guide for the Head of Programme and Product Operations —
+    how this tool works, what each section does, and how it fits into
+    the daily work of managing resource distribution across 50+ Spots.
+  </p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Maps to JD line</span>
+      <span class="cover-meta-value">Oversight of books &amp; wider resource and device distribution</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Network covered</span>
+      <span class="cover-meta-value">49 Spots · 4 RC clusters · Ghana + Kenya</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Status</span>
+      <span class="cover-meta-value">Prototype · synthetic demo data</span>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ================================================================
+     TABLE OF CONTENTS
+================================================================ -->
+<nav class="toc" aria-label="Table of contents">
+  <p class="toc-title">Contents</p>
+  <ul class="toc-list">
+    <li><a href="#what-it-is"><span class="toc-num">01</span> What this tool is</a></li>
+    <li><a href="#the-principle"><span class="toc-num">02</span> The core principle</a></li>
+    <li><a href="#overview-view"><span class="toc-num">03</span> Overview view</a></li>
+    <li><a href="#grid-view"><span class="toc-num">04</span> Spot resourcing grid</a></li>
+    <li><a href="#requests-view"><span class="toc-num">05</span> Requests &amp; fulfilment</a></li>
+    <li><a href="#flagged-view"><span class="toc-num">06</span> Under-resourced Spots</a></li>
+    <li><a href="#status-rules"><span class="toc-num">07</span> How status is calculated</a></li>
+    <li><a href="#workflow"><span class="toc-num">08</span> Typical weekly workflow</a></li>
+    <li><a href="#who-does-what"><span class="toc-num">09</span> Who does what</a></li>
+    <li><a href="#roadmap"><span class="toc-num">10</span> Next steps if built for real</a></li>
+  </ul>
+</nav>
+
+
+<!-- ================================================================
+     01 — WHAT IT IS
+================================================================ -->
+<section class="section" id="what-it-is">
+  <p class="section-eyebrow">01</p>
+  <h2 class="section-title">What this tool is</h2>
+  <p class="section-lead">
+    A single, network-wide view of how books, tablets, and other learning materials
+    are distributed across EduSpots' Spots — and where the gaps are.
+  </p>
+
+  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-bottom:16px;">
+    Right now, distribution tracking across 50+ Spots likely lives in a patchwork of
+    spreadsheets, WhatsApp messages, and local knowledge held by individual Regional
+    Coordinators. That works when the network is small. It starts to break down when
+    you need to answer questions like: which Spots haven't received a book delivery
+    in six months? Which requests have been sitting open for 45 days? Is the Northern
+    cluster consistently under-resourced compared to Volta?
+  </p>
+
+  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-bottom:28px;">
+    This tracker consolidates that picture. It doesn't replace the spreadsheets or
+    the RC relationships — it sits above them, giving the Head of Programme and
+    Product Operations a network-level view that makes distribution decisions
+    faster, fairer, and easier to justify to funders.
+  </p>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M6 20V10M12 20V4M18 20v-6"/></svg>
+      </div>
+      <div class="feature-card-title">Network-wide in one view</div>
+      <div class="feature-card-body">See all 49 Spots and their resourcing status without opening a single spreadsheet or asking an RC for an update.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="feature-card-title">Specific, actionable flags</div>
+      <div class="feature-card-body">Every flagged Spot carries the exact reason — "0 devices, 52 Sparks reached" not just a red dot — so you know what action is needed before you open the detail.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="feature-card-title">Request queue, not a black box</div>
+      <div class="feature-card-body">Every resource request — from date raised to days open to fulfilment — is visible in one table, sorted and filtered however you need it.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div class="feature-card-title">Human decision, always</div>
+      <div class="feature-card-body">The tool surfaces what to notice. Every allocation, follow-up, and resourcing call is made by a person — an RC, the Head of Ops, or both together.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     02 — THE PRINCIPLE
+================================================================ -->
+<section class="section" id="the-principle">
+  <p class="section-eyebrow">02</p>
+  <h2 class="section-title">The core principle</h2>
+  <p class="section-lead">Automation surfaces what to notice. A human decides what to do about it.</p>
+
+  <div class="callout callout-principle">
+    <span class="callout-icon">🌿</span>
+    <div>
+      <strong>Why this matters for distribution decisions</strong>
+      <p>A tool that auto-allocates resources to flagged Spots sounds efficient, but it removes the judgment that makes allocation fair. An RC knows that Bimbilla has a temporary closure, that a Book Aid International shipment is already en route to Katanga-Zuarungu, that Savelugu's RC has a follow-up call scheduled for next week. The tracker doesn't have that context. So it flags; you decide.</p>
+    </div>
+  </div>
+
+  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-top:20px;">
+    This principle is built into every interactive element in the tracker. The
+    "Acknowledge for follow-up" button on a flagged Spot doesn't raise a request
+    or queue a delivery — it records that a human has eyes on it. The request
+    table doesn't auto-close requests when they age past a threshold — it shows
+    you exactly how old they are and lets you act. The status rules are written
+    out plainly in the README and in this document so there are no surprises
+    about why something was flagged.
+  </p>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     03 — OVERVIEW VIEW
+================================================================ -->
+<section class="section" id="overview-view">
+  <p class="section-eyebrow">03</p>
+  <h2 class="section-title">Overview view</h2>
+  <p class="section-lead">The starting screen. A pulse-check on the whole network before you go deeper.</p>
+
+  <div class="view-block">
+    <div class="view-block-header">
+      <div class="view-block-icon icon-forest">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <div>
+        <div class="view-block-name">Overview</div>
+        <div class="view-block-tagline">KPI row · 12-month trend chart · cluster distribution chart</div>
+      </div>
+    </div>
+    <div class="view-block-body">
+      <p>The Overview loads first when you open the tracker. It answers the most common Monday-morning question: <em>what's the state of distribution across the network right now?</em></p>
+      <p>The KPI row gives five numbers at a glance. The two charts underneath show whether distribution is trending in the right direction over time, and whether any RC cluster is being systematically under-served.</p>
+
+      <ul class="element-list">
+        <li class="element-item">
+          <span class="element-label">Total books distributed</span>
+          <span class="element-desc">Cumulative estimate of books on hand across all Spots. Useful as a headline figure for funder reports or board updates. In a live system, this would reflect confirmed distribution records rather than estimates.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Total devices distributed</span>
+          <span class="element-desc">Tablets and other devices on hand across the network. Devices are the scarcest resource in the EduSpots model, so this number warrants particular attention when it's low relative to Sparks reached.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Open / unfulfilled requests</span>
+          <span class="element-desc">Any request that hasn't been fulfilled yet — includes both "open" (no action taken) and "in progress" (being worked). A rising number here is a signal that fulfilment capacity or partner supply is being stretched.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Spots below benchmark</span>
+          <span class="element-desc">The count of Spots flagged as either "below benchmark" or "under-resourced" by the status rules. This is the number to track week-on-week: going up means gaps are widening; going down means follow-ups are working.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Avg. request-to-fulfilment time</span>
+          <span class="element-desc">How long it takes on average from a Spot raising a request to that request being marked fulfilled. Useful for capacity planning and for conversations with partners about lead times.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">12-month trend chart</span>
+          <span class="element-desc">A stacked bar chart showing books, tablets, and other materials distributed each month for the past year. Lets you spot seasonal patterns (e.g. large book shipments timed to school terms) and identify months where distribution dropped unexpectedly.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Resources by RC cluster</span>
+          <span class="element-desc">A horizontal grouped bar comparing books and devices on hand across the four RC clusters: Northern Region, Volta Region, Central/Western Regions, and New Spots. An obvious imbalance here is a prompt for a conversation with that cluster's RC about whether distribution has been reaching all their Spots.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     04 — SPOT RESOURCING GRID
+================================================================ -->
+<section class="section" id="grid-view">
+  <p class="section-eyebrow">04</p>
+  <h2 class="section-title">Spot resourcing grid</h2>
+  <p class="section-lead">All 49 Spots as colour-coded tiles. The fastest way to see which Spots need attention.</p>
+
+  <div class="view-block">
+    <div class="view-block-header">
+      <div class="view-block-icon icon-sky">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      </div>
+      <div>
+        <div class="view-block-name">Spot resourcing grid</div>
+        <div class="view-block-tagline">49 tiles · filterable by status and RC cluster · click for detail</div>
+      </div>
+    </div>
+    <div class="view-block-body">
+      <p>The grid gives you a spatial scan of the network. Green-bordered tiles are fine. Gold means worth watching. Clay/red means something specific has been flagged and needs follow-up. You can see the whole picture in seconds without reading a single row of a spreadsheet.</p>
+      <p>Filter by status to isolate only the Spots that need attention. Filter by RC cluster to prepare for a check-in call with a specific coordinator — you'll see exactly which of their Spots are flagged before you dial in.</p>
+      <p>Clicking any tile opens a detail panel for that Spot: books and devices on hand, last distribution date, Sparks reached, and all requests linked to that Spot (open, in progress, and fulfilled).</p>
+
+      <ul class="element-list">
+        <li class="element-item">
+          <span class="element-label">Tile colour</span>
+          <span class="element-desc">Green border = well-resourced. Gold border = below benchmark. Clay/red border = under-resourced. The colour encodes the computed status — no manual tagging required.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Tile content</span>
+          <span class="element-desc">Each tile shows the Spot name, its RC cluster, a status badge, and a quick read of books on hand and devices on hand.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Status filter</span>
+          <span class="element-desc">Narrow to "under-resourced" only to get a focused list for an urgent resourcing meeting, or "below benchmark" to see what's at risk of slipping further.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Cluster filter</span>
+          <span class="element-desc">Shows only Spots within a specific RC's cluster — useful for preparing cluster-level reporting or individual RC check-ins.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Spot detail modal</span>
+          <span class="element-desc">Click any tile to see full detail: books on hand (estimate), devices on hand, Sparks reached, last distribution date, and the complete request history for that Spot. Close with ✕ or press Escape.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     05 — REQUESTS & FULFILMENT
+================================================================ -->
+<section class="section" id="requests-view">
+  <p class="section-eyebrow">05</p>
+  <h2 class="section-title">Requests &amp; fulfilment</h2>
+  <p class="section-lead">The operational heart of the tracker — a lightweight ticket queue for every resource request across the network.</p>
+
+  <div class="view-block">
+    <div class="view-block-header">
+      <div class="view-block-icon icon-gold">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+      </div>
+      <div>
+        <div class="view-block-name">Requests &amp; fulfilment</div>
+        <div class="view-block-tagline">Sortable table · filterable by status and type · click any row for detail</div>
+      </div>
+    </div>
+    <div class="view-block-body">
+      <p>Every resource request in the network lives in this table. Think of it as the operational to-do list for distribution: what has been asked for, by which Spot, how long ago, and where it sits in the fulfilment process.</p>
+      <p>Sorting by "Days open" descending surfaces the oldest unresolved requests first — the ones most likely to be causing a resourcing problem at a Spot. Filtering by "Open" status narrows to requests that haven't been acted on at all yet.</p>
+      <p>Clicking any row opens the request detail panel, which includes full request information, which Spot and RC cluster it's tied to, and a source or partner note where one exists (e.g. "Partner donation — Book Aid International").</p>
+
+      <ul class="element-list">
+        <li class="element-item">
+          <span class="element-label">Request ID</span>
+          <span class="element-desc">A unique reference (e.g. REQ-014) for each request. In a live system, this would be the reference used in partner correspondence and internal handoffs.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Resource type</span>
+          <span class="element-desc">Books, Tablets, or Other materials. Filter by type to see, for example, how many tablet requests are currently open — useful when preparing for a partner conversation about device supply.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Days open</span>
+          <span class="element-desc">How many days have elapsed since the request was raised, for all non-fulfilled requests. This is the key column to watch: requests past 30 days affect a Spot's "below benchmark" status; past 60 days push a Spot to "under-resourced."</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Status badges</span>
+          <span class="element-desc"><span class="status-pill pill-open">Open</span> — no action taken. <span class="status-pill pill-inprogress">In progress</span> — being worked or partially fulfilled. <span class="status-pill pill-fulfilled">Fulfilled</span> — fulfilment date logged.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Column sorting</span>
+          <span class="element-desc">Click any column header to sort. Click again to reverse. Useful combinations: sort by Spot name to group requests by Spot; sort by Date requested to see the oldest requests; sort by Status to see all open requests together.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Source / partner note</span>
+          <span class="element-desc">Visible in the request detail panel. Where a source is noted (e.g. "Partner donation — Book Aid International"), it links the request to a specific supply route — helpful for tracking which partner relationships are being utilised.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     06 — UNDER-RESOURCED SPOTS
+================================================================ -->
+<section class="section" id="flagged-view">
+  <p class="section-eyebrow">06</p>
+  <h2 class="section-title">Under-resourced Spots</h2>
+  <p class="section-lead">The action view — every Spot that has crossed a threshold, with the specific reason and a way to take ownership of the follow-up.</p>
+
+  <div class="view-block">
+    <div class="view-block-header">
+      <div class="view-block-icon icon-clay">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div>
+        <div class="view-block-name">Under-resourced Spots</div>
+        <div class="view-block-tagline">Flagged Spots only · specific reasons · acknowledge for follow-up</div>
+      </div>
+    </div>
+    <div class="view-block-body">
+      <p>This view collects every Spot that has failed at least one resourcing threshold — sorted with the most serious cases (under-resourced) at the top. Each card shows not just the status, but exactly why the Spot was flagged, so you arrive at a follow-up conversation already knowing what the problem is.</p>
+      <p>The "Acknowledge for follow-up" button records that someone — an RC, the Head of Ops, or HQ — has taken ownership of reviewing that Spot's situation. It doesn't raise a request, it doesn't send a notification, and it doesn't fulfil an allocation. It's a human handshake: I've seen this, I'm on it.</p>
+
+      <ul class="element-list">
+        <li class="element-item">
+          <span class="element-label">Specific flagged reasons</span>
+          <span class="element-desc">Each card lists the exact condition(s) that triggered the flag, e.g. "No distribution logged in 10 months" or "0 devices on hand — 47 Sparks reached" or "2 open requests older than 60 days." Never just a colour.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Spot context on the card</span>
+          <span class="element-desc">Books on hand, devices on hand, Sparks reached, and last distribution date are shown directly on the card — you don't need to open a detail panel to understand the situation.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Acknowledge for follow-up</span>
+          <span class="element-desc">Marks a Spot as having been reviewed. The button becomes a green "✓ Acknowledged" badge. In this prototype this resets on refresh; in a live system it would persist with a timestamp and the name of whoever acknowledged it.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">View Spot detail</span>
+          <span class="element-desc">Opens the full Spot detail modal — same as clicking the tile in the grid — so you can see the request history without switching views.</span>
+        </li>
+        <li class="element-item">
+          <span class="element-label">Sort order</span>
+          <span class="element-desc">Under-resourced Spots always appear above below-benchmark Spots, so the most urgent cases are at the top of the list without any manual sorting.</span>
+        </li>
+      </ul>
+
+      <div class="callout callout-note" style="margin-top:20px;">
+        <span class="callout-icon">💡</span>
+        <div>
+          <strong>How to use this view in a weekly ops review</strong>
+          <p>Open this view at the start of each week. Work through the under-resourced cards first. For each one: does the flagged reason match something you're already aware of? If yes, acknowledge it. If no, it needs a call with the relevant RC. Then move to below-benchmark — these are the ones to watch before they tip into under-resourced.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     07 — STATUS RULES
+================================================================ -->
+<section class="section" id="status-rules">
+  <p class="section-eyebrow">07</p>
+  <h2 class="section-title">How status is calculated</h2>
+  <p class="section-lead">Every status is computed by a named function with explicit rules — no hidden scoring, no black box.</p>
+
+  <p style="font-size:15px; color:#1A1A16; line-height:1.75; margin-bottom:24px;">
+    The rules are the same regardless of which view you're in. A Spot flagged as
+    "under-resourced" on the grid is flagged for the same reason it appears in
+    the Under-resourced Spots view. The reason is always shown alongside the status.
+  </p>
+
+  <h3 style="font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:700; color:#1A1A16; margin-bottom:14px;">Spot resourcing status</h3>
+  <div class="status-row">
+    <div class="status-item status-under">
+      <span class="status-pill pill-under">Under-resourced</span>
+      <div class="status-content">
+        <div class="status-name">Any one of the following:</div>
+        <div class="status-conditions">No distribution logged in <strong>9+ months</strong>, OR devices on hand is <strong>0</strong> while the Spot has <strong>40 or more Sparks reached</strong>, OR <strong>2 or more open requests older than 60 days</strong>.</div>
+      </div>
+    </div>
+    <div class="status-item status-below">
+      <span class="status-pill pill-below">Below benchmark</span>
+      <div class="status-content">
+        <div class="status-name">Any one of the following (and not already under-resourced):</div>
+        <div class="status-conditions">No distribution logged in <strong>4–8 months</strong>, OR <strong>1 or more open requests older than 30 days</strong>.</div>
+      </div>
+    </div>
+    <div class="status-item status-well">
+      <span class="status-pill pill-well">Well-resourced</span>
+      <div class="status-content">
+        <div class="status-name">None of the above conditions apply.</div>
+        <div class="status-conditions">Distribution is within the last 4 months and there are no stale open requests.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:700; color:#1A1A16; margin:28px 0 14px;">Request status</h3>
+  <div class="status-row">
+    <div class="status-item status-under">
+      <span class="status-pill pill-open">Open</span>
+      <div class="status-content">
+        <div class="status-conditions">No fulfilment action has been logged yet. The request is sitting unaddressed.</div>
+      </div>
+    </div>
+    <div class="status-item" style="border-left: 3px solid var(--sky);">
+      <span class="status-pill pill-inprogress">In progress</span>
+      <div class="status-content">
+        <div class="status-conditions">Partially fulfilled, or explicitly flagged as being actively worked — for example, a delivery is confirmed but not yet received.</div>
+      </div>
+    </div>
+    <div class="status-item status-well">
+      <span class="status-pill pill-fulfilled">Fulfilled</span>
+      <div class="status-content">
+        <div class="status-conditions">A fulfilment date has been logged. The request is considered closed.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-note" style="margin-top:24px;">
+    <span class="callout-icon">📋</span>
+    <div>
+      <strong>The thresholds can be adjusted</strong>
+      <p>The 9-month, 4-month, 30-day, and 60-day thresholds in the status rules are starting points — not fixed policy. In a live deployment, the Head of Ops and RCs would review these together and set thresholds that reflect what EduSpots considers a healthy distribution cadence for each resource type.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     08 — TYPICAL WORKFLOW
+================================================================ -->
+<section class="section" id="workflow">
+  <p class="section-eyebrow">08</p>
+  <h2 class="section-title">Typical weekly workflow</h2>
+  <p class="section-lead">How the Head of Programme and Product Operations would use this in practice — from Monday morning to a distribution decision.</p>
+
+  <div class="workflow">
+    <div class="workflow-step">
+      <div class="workflow-num">1</div>
+      <div class="workflow-content">
+        <div class="workflow-title">Open Overview — read the pulse</div>
+        <div class="workflow-body">Check the KPI row. Has the number of Spots below benchmark gone up or down since last week? Is the open request count climbing? Is average fulfilment time trending longer? These numbers set the agenda for the rest of the session.</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">2</div>
+      <div class="workflow-content">
+        <div class="workflow-title">Go to Under-resourced Spots — triage the urgent cases</div>
+        <div class="workflow-body">Work through the under-resourced cards first. For each: is this already known and in hand? Acknowledge it. Is it a surprise? Note it for an RC call. Repeat for below-benchmark cards — these are the early warnings before a situation becomes urgent.</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">3</div>
+      <div class="workflow-content">
+        <div class="workflow-title">Go to Requests &amp; Fulfilment — sort by days open</div>
+        <div class="workflow-body">Sort the table by "Days open" descending. Any request past 60 days that's still open is directly affecting a Spot's resourcing status. Identify which ones need a fulfilment push — a partner chase, a purchase order, or a reallocation from a surplus Spot.</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">4</div>
+      <div class="workflow-content">
+        <div class="workflow-title">Prepare for RC cluster calls — filter the grid by cluster</div>
+        <div class="workflow-body">Before a check-in call with, say, Cynthia Mawuena Tetteh (Volta Region), filter the Spot grid to Volta Region. See at a glance which of her Spots are flagged, click through to the detail for specific ones, and arrive at the call with a focused agenda rather than a general "how's it going?"</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">5</div>
+      <div class="workflow-content">
+        <div class="workflow-title">Make the allocation decision — outside the tool</div>
+        <div class="workflow-body">The tracker tells you what's needed and where. The actual allocation — who gets the next Book Aid International shipment, which Spot gets priority for the next tablet purchase — is made by the Head of Ops and the relevant RC together, using the tracker as the shared evidence base.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     09 — WHO DOES WHAT
+================================================================ -->
+<section class="section" id="who-does-what">
+  <p class="section-eyebrow">09</p>
+  <h2 class="section-title">Who does what</h2>
+  <p class="section-lead">The tracker serves three roles differently. The tool does the monitoring; people make the decisions.</p>
+
+  <table class="role-table">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Who</th>
+        <th>In the tool</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Monitor network-wide resourcing status</td>
+        <td><span class="role-tag tag-head">Head of Ops</span></td>
+        <td>Overview KPIs + Under-resourced Spots view</td>
+      </tr>
+      <tr>
+        <td>Identify which Spots need an urgent intervention</td>
+        <td><span class="role-tag tag-head">Head of Ops</span></td>
+        <td>Under-resourced Spots — clay/red cards</td>
+      </tr>
+      <tr>
+        <td>Prepare for cluster check-in calls</td>
+        <td><span class="role-tag tag-head">Head of Ops</span> <span class="role-tag tag-rc">RC</span></td>
+        <td>Spot grid filtered by RC cluster</td>
+      </tr>
+      <tr>
+        <td>Chase stale or overdue requests</td>
+        <td><span class="role-tag tag-head">Head of Ops</span> <span class="role-tag tag-rc">RC</span></td>
+        <td>Requests table sorted by days open</td>
+      </tr>
+      <tr>
+        <td>Record that a flagged Spot is being reviewed</td>
+        <td><span class="role-tag tag-rc">RC</span> <span class="role-tag tag-head">Head of Ops</span></td>
+        <td>Acknowledge for follow-up button</td>
+      </tr>
+      <tr>
+        <td>Decide which Spot receives a resource allocation</td>
+        <td><span class="role-tag tag-head">Head of Ops</span> <span class="role-tag tag-rc">RC</span></td>
+        <td>Outside the tool — informed by it</td>
+      </tr>
+      <tr>
+        <td>Flag distribution trends for funder reports</td>
+        <td><span class="role-tag tag-head">Head of Ops</span></td>
+        <td>Overview charts · 12-month trend</td>
+      </tr>
+      <tr>
+        <td>Compute resourcing status and flag anomalies</td>
+        <td><span class="role-tag tag-auto">Automated</span></td>
+        <td>computeResourcingStatus() · computeRequestStatus()</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ================================================================
+     10 — ROADMAP
+================================================================ -->
+<section class="section" id="roadmap">
+  <p class="section-eyebrow">10</p>
+  <h2 class="section-title">Next steps if built for real</h2>
+  <p class="section-lead">This is a working prototype built on synthetic data. Here's what a live deployment would add.</p>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <div class="feature-card-title">Live data connection</div>
+      <div class="feature-card-body">Connect to a shared Google Sheet or Airtable base that RCs already update — so the tracker reflects real distribution records without requiring a new data entry habit.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 000 6h20a3 3 0 000-6z"/><path d="M6 17V3h12v14"/></svg>
+      </div>
+      <div class="feature-card-title">Email / WhatsApp alerts</div>
+      <div class="feature-card-body">Automated weekly digest to the Head of Ops and each RC listing new flags in their cluster — so the tracker pushes urgent information rather than waiting to be opened.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+      </div>
+      <div class="feature-card-title">CSV export</div>
+      <div class="feature-card-body">Export the requests table or the flagged Spots list to CSV for inclusion in RC cluster reports, partner updates, or board packs — without reformatting anything manually.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="feature-card-title">Per-Spot distribution history</div>
+      <div class="feature-card-body">A timeline view inside each Spot's detail panel showing every distribution event — useful for identifying patterns like Spots that receive large one-off shipments but no follow-up.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <div class="feature-card-title">Integration with Project #1</div>
+      <div class="feature-card-body">Cross-reference resourcing status with Spot health data from the MEL Dashboard — so a Spot with low activity AND low resourcing surfaces as a combined priority rather than two separate flags.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div class="feature-card-title">Acknowledge with attribution</div>
+      <div class="feature-card-body">Persist acknowledgements with a timestamp and the name of the person who logged them — so there's a clear audit trail of who took ownership of a flagged Spot and when.</div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /page -->
+
+<!-- ================================================================
+     FOOTER
+================================================================ -->
+<footer class="footer">
+  <div class="footer-left">
+    EduSpots Resource &amp; Device Distribution Tracker<br />
+    Project 5 of 5 · Head of Programme and Product Operations portfolio<br />
+    Prototype — all book counts, device counts, dates, and requests are synthetic demo data
+  </div>
+  <div class="footer-right">
+    eduspots.org
+  </div>
+</footer>
+
+</body>
+</html>
