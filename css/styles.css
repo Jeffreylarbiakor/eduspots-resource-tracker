@@ -67,14 +67,23 @@ ul { list-style: none; }
   position: sticky;
   top: 0;
   overflow: hidden;
+}
 
-  /* Kente-inspired accent stripe on right edge */
-  border-right: 0 solid transparent;
-  box-shadow: inset -4px 0 0 0 var(--forest-light),
-              inset -5px 0 0 0 var(--gold),
-              inset -7px 0 0 0 var(--forest-light),
-              inset -8px 0 0 0 #fff,
-              inset -10px 0 0 0 var(--forest-light);
+.sidebar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    var(--forest-light) 0%,
+    var(--gold) 25%,
+    var(--sky) 50%,
+    var(--clay) 75%,
+    var(--forest-light) 100%
+  );
 }
 
 .sidebar-brand {
