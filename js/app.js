@@ -153,12 +153,13 @@ function renderGrid() {
   }).join("");
 
   const html = `
-    <div class="view-header">
-      <h2 class="view-title">Spot resourcing grid</h2>
-      <p class="view-subtitle">All 49 Spots, colour-coded by resourcing status. Click a tile to view detail.</p>
-    </div>
+    <div class="sticky-header">
+      <div class="view-header" style="margin-bottom:16px;">
+        <h2 class="view-title">Spot resourcing grid</h2>
+        <p class="view-subtitle">All 49 Spots, colour-coded by resourcing status. Click a tile to view detail.</p>
+      </div>
 
-    <div class="filter-bar">
+    <div class="filter-bar" style="margin-bottom:0;">
       <div class="filter-group">
         <label for="gridStatusFilter" class="filter-label">Status</label>
         <select id="gridStatusFilter" class="filter-select">
@@ -176,8 +177,9 @@ function renderGrid() {
       </div>
       <span class="filter-count">${filtered.length} of ${ALL_SPOTS.length} Spots</span>
     </div>
+    </div>
 
-    <div class="spot-grid">
+    <div class="spot-grid" style="margin-top:16px;">
       ${tiles.length ? tiles : '<p class="empty-state">No Spots match the current filters.</p>'}
     </div>
   `;

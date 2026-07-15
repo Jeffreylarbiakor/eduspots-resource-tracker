@@ -180,8 +180,17 @@ ul { list-style: none; }
 }
 
 .main-inner {
-  padding: 32px 36px;
+  padding: 0 36px 80px;
   max-width: 1280px;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--paper);
+  padding: 32px 0 16px;
+  margin-bottom: 0;
 }
 
 /* ---------------------------------------------------------------------------
