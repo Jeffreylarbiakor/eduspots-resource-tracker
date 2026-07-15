@@ -245,12 +245,13 @@ function renderRequests() {
   }
 
   const html = `
-    <div class="view-header">
-      <h2 class="view-title">Requests &amp; fulfilment</h2>
-      <p class="view-subtitle">${ALL_REQUESTS.length} resource requests across the network. Click any row to view detail.</p>
-    </div>
+    <div class="sticky-header">
+      <div class="view-header" style="margin-bottom:16px;">
+        <h2 class="view-title">Requests &amp; fulfilment</h2>
+        <p class="view-subtitle">${ALL_REQUESTS.length} resource requests across the network. Click any row to view detail.</p>
+      </div>
 
-    <div class="filter-bar">
+    <div class="filter-bar" style="margin-bottom:0;">
       <div class="filter-group">
         <label for="reqStatusFilter" class="filter-label">Status</label>
         <select id="reqStatusFilter" class="filter-select">
@@ -271,8 +272,9 @@ function renderRequests() {
       </div>
       <span class="filter-count">${filtered.length} of ${ALL_REQUESTS.length} requests</span>
     </div>
+    </div>
 
-    <div class="table-wrap">
+    <div class="table-wrap" style="margin-top:16px;">
       <table class="data-table">
         <thead>
           <tr>
@@ -368,16 +370,18 @@ function renderFlagged() {
   }).join("");
 
   const html = `
-    <div class="view-header">
-      <h2 class="view-title">Under-resourced Spots</h2>
-      <p class="view-subtitle">
-        ${flagged.length} Spot${flagged.length !== 1 ? "s" : ""} flagged below benchmark or under-resourced.
-        Acknowledging a Spot marks that an RC or HQ team member has taken ownership of the review —
-        it does not create or fulfil a request.
-      </p>
+    <div class="sticky-header">
+      <div class="view-header" style="margin-bottom:0;">
+        <h2 class="view-title">Under-resourced Spots</h2>
+        <p class="view-subtitle">
+          ${flagged.length} Spot${flagged.length !== 1 ? "s" : ""} flagged below benchmark or under-resourced.
+          Acknowledging a Spot marks that an RC or HQ team member has taken ownership of the review —
+          it does not create or fulfil a request.
+        </p>
+      </div>
     </div>
 
-    <div class="flagged-list">
+    <div class="flagged-list" style="margin-top:28px;">
       ${cards.length ? cards : '<p class="empty-state">No Spots are currently flagged. All Spots are within the resourcing benchmark.</p>'}
     </div>
   `;
