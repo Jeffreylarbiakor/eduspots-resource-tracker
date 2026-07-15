@@ -24,6 +24,7 @@
   --sidebar-w: 240px;
   --radius:    6px;
   --shadow:    0 1px 4px rgba(0,0,0,0.08), 0 2px 12px rgba(0,0,0,0.05);
+  --content-top: 36px;
 }
 
 /* ---------------------------------------------------------------------------
@@ -180,7 +181,7 @@ ul { list-style: none; }
 }
 
 .main-inner {
-  padding: 32px 36px 80px;
+  padding: var(--content-top) 36px 80px;
   max-width: 1280px;
 }
 
@@ -189,7 +190,11 @@ ul { list-style: none; }
   top: 0;
   z-index: 10;
   background: var(--paper);
-  padding: 32px 0 16px;
+  /* Cancel .main-inner's top padding, then re-apply the same amount as our
+     own padding, so the title lands at --content-top whether at rest or
+     pinned mid-scroll (main-inner's padding scrolls away, ours doesn't). */
+  margin-top: calc(-1 * var(--content-top));
+  padding: var(--content-top) 0 16px;
   margin-bottom: 0;
 }
 
