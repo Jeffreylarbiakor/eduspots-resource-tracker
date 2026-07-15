@@ -452,7 +452,6 @@ ul { list-style: none; }
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel);
-  box-shadow: var(--shadow);
 }
 
 .data-table {
@@ -520,7 +519,6 @@ ul { list-style: none; }
   border-radius: var(--radius);
   border-left-width: 4px;
   padding: 18px 20px;
-  box-shadow: var(--shadow);
 }
 
 .flag-card.status-under { border-left-color: var(--clay); }
