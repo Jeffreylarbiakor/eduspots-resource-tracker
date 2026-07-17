@@ -835,14 +835,14 @@ ul { list-style: none; }
 
 /* =============================================================================
    Guide page (resource-tracker-guide.html)
-   Document-only components with no equivalent elsewhere in the app. Shares
-   every token, the sidebar/main shell, and the badge/table components above
-   instead of redefining them.
+   A standalone document — no sidebar/main app shell. Shares every design
+   token and the badge/table components above instead of redefining them.
 ============================================================================= */
 
 .guide-page {
   max-width: 860px;
   margin: 0 auto;
+  padding: 0 32px 80px;
 }
 
 /* ── Cover ──────────────────────────────────────────────────── */
@@ -1359,13 +1359,12 @@ ul { list-style: none; }
 .footer-left { line-height: 1.8; }
 .footer-right { color: rgba(255,255,255,0.3); }
 
-/* ── Print — hide the app chrome, print the document only ───────────────── */
+/* ── Print ────────────────────────────────────────────────────────────────── */
 @media print {
-  .sidebar { display: none; }
-  .main { height: auto; overflow: visible; }
+  body { background: #fff; }
   .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .main-inner { padding: 0 20px 40px; }
+  .guide-page { padding: 0 20px 40px; }
   .view-block, .feature-card, .status-item, .callout { break-inside: avoid; }
   .section { break-inside: avoid; }
 }
@@ -1373,6 +1372,7 @@ ul { list-style: none; }
 /* ── Guide-specific responsive tweaks ────────────────────────────────────── */
 @media (max-width: 680px) {
   .cover { padding: 48px 24px 44px; }
+  .guide-page { padding: 0 20px 60px; }
   .feature-grid { grid-template-columns: 1fr; }
   .toc-list { grid-template-columns: 1fr; }
   .footer { padding: 24px; flex-direction: column; align-items: flex-start; }
