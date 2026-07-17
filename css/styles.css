@@ -32,6 +32,8 @@
 --------------------------------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html { scroll-behavior: smooth; }
+
 html, body {
   height: 100%;
   font-family: var(--font-body);
@@ -39,6 +41,7 @@ html, body {
   color: var(--ink);
   background: var(--paper);
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -829,3 +832,548 @@ ul { list-style: none; }
   transition: color 0.15s;
 }
 .guide-link:hover { color: rgba(255,255,255,0.90); }
+
+/* =============================================================================
+   Guide page (resource-tracker-guide.html)
+   Document-only components with no equivalent elsewhere in the app. Shares
+   every token, the sidebar/main shell, and the badge/table components above
+   instead of redefining them.
+============================================================================= */
+
+.guide-page {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* ── Cover ──────────────────────────────────────────────────── */
+.cover {
+  background: var(--forest);
+  color: #fff;
+  padding: 72px 60px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 5px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--forest-light) 0px, var(--forest-light) 8px,
+    var(--gold)         8px, var(--gold)         10px,
+    var(--forest-light) 10px, var(--forest-light) 12px,
+    #fff                12px, #fff                13px,
+    var(--forest-light) 13px, var(--forest-light) 15px
+  );
+}
+
+.cover-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cover-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.cover-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #fff;
+  max-width: 700px;
+  margin-bottom: 20px;
+}
+
+.cover-subtitle {
+  font-size: 16px;
+  color: rgba(255,255,255,0.65);
+  max-width: 560px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.cover-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.cover-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cover-meta-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.40);
+}
+
+.cover-meta-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+}
+
+/* ── TOC ────────────────────────────────────────────────────── */
+.toc {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--forest);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin: 44px 0 60px;
+}
+
+.toc-title {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.toc-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 40px;
+}
+
+.toc-list a {
+  font-size: 14px;
+  color: var(--forest-light);
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toc-list a:hover { text-decoration: underline; }
+
+.toc-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  width: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Section headings & body text ──────────────────────────── */
+.section {
+  margin-bottom: 60px;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-eyebrow::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+
+.section-lead {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 680px;
+  margin-bottom: 28px;
+  line-height: 1.65;
+}
+
+.guide-text {
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+
+.subsection-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+
+/* ── Feature cards ──────────────────────────────────────────── */
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.feature-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+}
+
+.feature-card-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(18,53,36,0.08);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  color: var(--forest);
+}
+
+.feature-card-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.feature-card-body {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── View breakdowns ────────────────────────────────────────── */
+.view-block {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.view-block-header {
+  padding: 18px 24px 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.view-block-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.icon-forest { background: rgba(18,53,36,0.10); color: var(--forest); }
+.icon-sky    { background: rgba(62,124,177,0.12); color: var(--sky); }
+.icon-gold   { background: rgba(217,166,46,0.15); color: #9B7119; }
+.icon-clay   { background: rgba(181,72,52,0.12); color: var(--clay); }
+
+.view-block-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.view-block-tagline {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.view-block-body {
+  padding: 20px 24px;
+}
+
+.view-block-body p {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.view-block-body p:last-of-type { margin-bottom: 0; }
+
+/* ── Element list ───────────────────────────────────────────── */
+.element-list {
+  margin-top: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.element-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.element-item:last-child { border-bottom: none; }
+
+.element-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--forest-light);
+  background: rgba(18,53,36,0.08);
+  padding: 2px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  align-self: flex-start;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.element-desc {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── Status rule cards — reuse .tile-badge / .req-badge for the pill itself ── */
+.status-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.status-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  border-left-width: 3px;
+}
+
+.status-item.status-well  { border-left-color: var(--forest-light); }
+.status-item.status-below { border-left-color: var(--gold); }
+.status-item.status-under { border-left-color: var(--clay); }
+
+.status-item .tile-badge,
+.status-item .req-badge {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.status-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.status-conditions {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── Callout boxes ──────────────────────────────────────────── */
+.callout {
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 24px 0;
+  font-size: 14px;
+  line-height: 1.65;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.callout-principle {
+  background: rgba(18,53,36,0.06);
+  border: 1px solid rgba(18,53,36,0.15);
+}
+
+.callout-note {
+  background: rgba(217,166,46,0.10);
+  border: 1px solid rgba(217,166,46,0.25);
+}
+
+.callout-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.callout strong {
+  display: block;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-size: 13px;
+}
+
+.callout p { color: var(--muted); margin: 0; }
+
+/* ── Workflow diagram ───────────────────────────────────────── */
+.workflow {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+  position: relative;
+}
+
+.workflow-step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding-bottom: 24px;
+  position: relative;
+}
+
+.workflow-step:last-child { padding-bottom: 0; }
+
+.workflow-step::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 36px;
+  bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+
+.workflow-step:last-child::before { display: none; }
+
+.workflow-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--forest);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.workflow-content {
+  padding-top: 6px;
+}
+
+.workflow-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.workflow-body {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── Role tags — used inside a .data-table (see .roles-table modifier) ──── */
+.role-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.tag-head { background: rgba(18,53,36,0.10); color: var(--forest); }
+.tag-rc   { background: rgba(62,124,177,0.12); color: #29618F; }
+.tag-auto { background: rgba(217,166,46,0.15); color: #9B7119; }
+
+.data-table.roles-table td { vertical-align: top; }
+
+/* ── Divider ────────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 52px 0;
+}
+
+/* ── Document footer (full-bleed, distinct from the app sidebar) ─────────── */
+.footer {
+  background: var(--forest);
+  color: rgba(255,255,255,0.5);
+  padding: 32px 60px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-left { line-height: 1.8; }
+.footer-right { color: rgba(255,255,255,0.3); }
+
+/* ── Print — hide the app chrome, print the document only ───────────────── */
+@media print {
+  .sidebar { display: none; }
+  .main { height: auto; overflow: visible; }
+  .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .main-inner { padding: 0 20px 40px; }
+  .view-block, .feature-card, .status-item, .callout { break-inside: avoid; }
+  .section { break-inside: avoid; }
+}
+
+/* ── Guide-specific responsive tweaks ────────────────────────────────────── */
+@media (max-width: 680px) {
+  .cover { padding: 48px 24px 44px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .toc-list { grid-template-columns: 1fr; }
+  .footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+}
