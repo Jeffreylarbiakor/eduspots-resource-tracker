@@ -1365,6 +1365,7 @@ ul { list-style: none; }
   .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .guide-page { padding: 0 20px 40px; }
+  .guide-link { display: none; }
   .view-block, .feature-card, .status-item, .callout { break-inside: avoid; }
   .section { break-inside: avoid; }
 }
