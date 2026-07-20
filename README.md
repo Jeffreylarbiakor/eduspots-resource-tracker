@@ -25,6 +25,8 @@ That principle is worth stating plainly here because it's the less dramatic vers
 
 ## Views
 
+All three data-heavy views (Spot resourcing grid, Requests & fulfilment, Under-resourced Spots) pin their title — and filters, where the view has them — to the top of the scroll area, so context and controls stay visible while the list scrolls underneath.
+
 ### Overview
 KPI row showing total books and devices distributed across the network, open/unfulfilled requests, Spots below the resourcing benchmark, and average request-to-fulfilment time. Two charts: a 12-month stacked bar of distribution by resource type (books / tablets / other materials), and a grouped bar of resources on hand by RC cluster (to spot whether resourcing is roughly even or lopsided).
 
@@ -36,6 +38,14 @@ A sortable, filterable table of all resource requests across the network — the
 
 ### Under-resourced Spots
 Every Spot flagged below benchmark or under-resourced, with the specific flagged reason (e.g. "No distribution logged in 10 months," "0 devices on hand — 52 Sparks reached"). An "Acknowledge for follow-up" button per Spot lets an RC or HQ team member mark that they've taken ownership of the review. Acknowledging a Spot **does not** create a request or fulfil an allocation — it only records that a human has eyes on it.
+
+---
+
+## Product guide
+
+`resource-tracker-guide.html` is a long-form companion document — what the tool is, a walkthrough of each view, how status is calculated, a typical weekly workflow, who does what, and next steps if this were built for real. It's linked from the app's sidebar as **"How this tool works"** (opens in a new tab).
+
+It's a standalone document, not another app view: no sidebar, full-bleed cover and footer, a table of contents, and a "← Back to tracker" link at the top of the cover. It shares `css/styles.css` with the main app — same design tokens, fonts, status badges, and table styling — so it reads as part of the same product without duplicating any CSS.
 
 ---
 
@@ -70,7 +80,7 @@ Identical tokens to Projects #1–4:
 | `--forest` | `#123524` | Sidebar, primary actions |
 | `--forest-light` | `#1F5C3D` | Well-resourced status, hover states |
 | `--gold` | `#D9A62E` | Below-benchmark status |
-| `--gold-soft` | `#F0D89B` | Soft gold tints |
+| `--gold-soft` | `#F0D89B` | Reserved — shared token across the portfolio, not currently drawn on in this project |
 | `--sky` | `#3E7CB1` | Secondary data, tablets in charts |
 | `--clay` | `#B54834` | Under-resourced status only — not decorative |
 | `--paper` | `#F6F2E9` | Page background |
@@ -80,7 +90,7 @@ Identical tokens to Projects #1–4:
 
 Fonts: Space Grotesk (headings/display), IBM Plex Sans (body), IBM Plex Mono (IDs/timestamps/badges) — via Google Fonts CDN.
 
-Sidebar: dark forest green, sticky/pinned to viewport height, with a Kente-inspired multi-stripe accent bar on the right edge.
+Sidebar: dark forest green, sticky/pinned to viewport height, with a Kente-inspired accent bar on the right edge — a smooth gradient cycling through forest-light, gold, sky, and clay.
 
 ---
 
@@ -93,7 +103,8 @@ Sidebar: dark forest green, sticky/pinned to viewport height, with a Kente-inspi
 ```
 eduspots-resource-tracker/
   index.html
-  css/styles.css
+  resource-tracker-guide.html   standalone product guide (see below)
+  css/styles.css                shared by both HTML pages
   js/data.js          seeded synthetic generator + status rules
   js/real-data.js     real Spot/RC/partner facts
   js/charts.js        Chart.js wrappers
